@@ -209,6 +209,7 @@ use std::sync::{Arc, Mutex};
 pub mod debug;
 pub mod framebuffer;
 pub mod index_buffer;
+pub mod program;
 pub mod render_buffer;
 pub mod uniforms;
 pub mod vertex_buffer;
@@ -217,7 +218,6 @@ pub mod texture;
 mod buffer;
 mod context;
 mod fbo;
-mod program;
 mod vertex_array_object;
 
 mod gl {
