@@ -163,7 +163,7 @@ Its arguments are the vertex buffer, index buffer, program, uniforms, and an obj
 (depth test, blending, backface culling, etc.).
 
 ```no_run
-use glium::Surface;
+use glium::{Framebuffer, Surface};
 # let display: glium::Display = unsafe { std::mem::uninitialized() };
 # let vertex_buffer: glium::VertexBuffer<u8> = unsafe { std::mem::uninitialized() };
 # let index_buffer: glium::IndexBuffer = unsafe { std::mem::uninitialized() };
