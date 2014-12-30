@@ -22,7 +22,7 @@ use std::sync::Arc;
 use buffer::{mod, Buffer};
 use context::GlVersion;
 use uniforms::{UniformValue, IntoUniformValue, Sampler};
-use {Surface, GlObject, ToGlEnum};
+use {Surface, Framebuffer, GlObject, ToGlEnum};
 
 pub use self::pixel::PixelValue;
 
@@ -1148,11 +1148,7 @@ impl Drop for TextureImplementation {
 /// To obtain such an object, call `texture.as_surface()`.
 pub struct TextureSurface<'a>(framebuffer::SimpleFrameBuffer<'a>);
 
-impl<'a> Surface for TextureSurface<'a> {
-    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32) {
-        self.0.clear_color(red, green, blue, alpha)
-    }
-
+impl<'a> Framebuffer for TextureSurface<'a> {
     fn clear_depth(&mut self, value: f32) {
         self.0.clear_depth(value)
     }
@@ -1179,6 +1175,12 @@ impl<'a> Surface for TextureSurface<'a> {
         U: ::uniforms::Uniforms, V: ::vertex_buffer::IntoVerticesSource<'v>
     {
         self.0.draw(vb, ib, program, uniforms, draw_parameters)
+    }
+}
+
+impl<'a> Surface for TextureSurface<'a> {
+    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32) {
+        self.0.clear_color(red, green, blue, alpha)
     }
 
     fn get_blit_helper(&self) -> ::BlitHelper {

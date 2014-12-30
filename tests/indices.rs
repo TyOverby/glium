@@ -8,7 +8,7 @@ extern crate glutin;
 extern crate glium;
 
 use std::default::Default;
-use glium::Surface;
+use glium::{Framebuffer, Surface};
 
 mod support;
 

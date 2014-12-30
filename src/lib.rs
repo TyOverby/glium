@@ -630,10 +630,7 @@ pub struct Rect {
 }
 
 /// Object which can be drawn upon.
-pub trait Surface {
-    /// Clears the color components of the target.
-    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32);
-
+pub trait Framebuffer {
     /// Clears the depth component of the target.
     fn clear_depth(&mut self, value: f32);
 
@@ -677,6 +674,12 @@ pub trait Surface {
     fn draw<'a, 'b, V, I, ID, U>(&mut self, V, &I, program: &Program, uniforms: U,
         draw_parameters: &DrawParameters) where V: vertex_buffer::IntoVerticesSource<'b>,
         I: index_buffer::ToIndicesSource<ID>, U: uniforms::Uniforms;
+}
+
+/// Object which can be drawn upon.
+pub trait Surface: Framebuffer {
+    /// Clears the color components of the target.
+    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32);
 
     /// Returns an opaque type that is used by the implementation of blit functions.
     fn get_blit_helper(&self) -> BlitHelper;
@@ -741,11 +744,7 @@ impl<'t> Frame<'t> {
     }
 }
 
-impl<'t> Surface for Frame<'t> {
-    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32) {
-        fbo::clear_color(&self.display.context, None, red, green, blue, alpha)
-    }
-
+impl<'t> Framebuffer for Frame<'t> {
     fn clear_depth(&mut self, value: f32) {
         fbo::clear_depth(&self.display.context, None, value)
     }
@@ -790,6 +789,12 @@ impl<'t> Surface for Frame<'t> {
         fbo::draw(&self.display, None, vertex_buffer.into_vertices_source(),
                   &index_buffer.to_indices_source(), program, uniforms, draw_parameters,
                   (self.dimensions.0 as u32, self.dimensions.1 as u32))
+    }
+}
+
+impl<'t> Surface for Frame<'t> {
+    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32) {
+        fbo::clear_color(&self.display.context, None, red, green, blue, alpha)
     }
 
     fn get_blit_helper(&self) -> BlitHelper {

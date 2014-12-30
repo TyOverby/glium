@@ -7,7 +7,7 @@ extern crate image;
 use std::io::BufReader;
 use std::rand;
 
-use glium::{DisplayBuild, Texture, Surface, Rect};
+use glium::{DisplayBuild, Framebuffer, Texture, Surface, Rect};
 
 #[cfg(not(feature = "image"))]
 fn main() {

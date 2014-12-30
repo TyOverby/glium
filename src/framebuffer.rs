@@ -43,7 +43,7 @@ use std::kinds::marker::ContravariantLifetime;
 use texture::{Texture, Texture2d, DepthTexture2d, StencilTexture2d, DepthStencilTexture2d};
 use fbo::FramebufferAttachments;
 
-use {Display, Program, Surface, GlObject};
+use {Display, Program, Surface, Framebuffer, GlObject};
 
 use {fbo, gl};
 
@@ -181,11 +181,7 @@ impl<'a> SimpleFrameBuffer<'a> {
     }
 }
 
-impl<'a> Surface for SimpleFrameBuffer<'a> {
-    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32) {
-        fbo::clear_color(&self.display.context, Some(&self.attachments), red, green, blue, alpha)
-    }
-
+impl<'a> Framebuffer for SimpleFrameBuffer<'a> {
     fn clear_depth(&mut self, value: f32) {
         fbo::clear_depth(&self.display.context, Some(&self.attachments), value)
     }
@@ -227,6 +223,12 @@ impl<'a> Surface for SimpleFrameBuffer<'a> {
 
         fbo::draw(&self.display, Some(&self.attachments), vb.into_vertices_source(),
                   &ib.to_indices_source(), program, uniforms, draw_parameters, self.dimensions)
+    }
+}
+
+impl<'a> Surface for SimpleFrameBuffer<'a> {
+    fn clear_color(&mut self, red: f32, green: f32, blue: f32, alpha: f32) {
+        fbo::clear_color(&self.display.context, Some(&self.attachments), red, green, blue, alpha)
     }
 
     fn get_blit_helper(&self) -> ::BlitHelper {

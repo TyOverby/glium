@@ -7,7 +7,7 @@ extern crate glium_macros;
 extern crate glutin;
 extern crate glium;
 
-use glium::{Texture, Surface};
+use glium::{Texture, Framebuffer, Surface};
 
 mod support;
 

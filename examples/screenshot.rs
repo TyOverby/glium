@@ -10,7 +10,7 @@ extern crate glium;
 #[cfg(feature = "image")]
 extern crate image;
 
-use glium::Surface;
+use glium::{Framebuffer, Surface};
 
 #[cfg(not(feature = "image"))]
 fn main() {
